@@ -1,0 +1,32 @@
+# Backend
+fastapi>=0.100.0
+pydantic>=2.0.0
+uvicorn[standard]
+python-multipart
+
+# PDF parsing
+pymupdf
+
+# OCR / Document VLM
+paddleocr
+paddlepaddle
+
+# Database (PostgreSQL)
+sqlalchemy
+asyncpg
+psycopg2-binary
+alembic
+
+# File storage (S3-compatible)
+boto3
+
+# Testing
+pytest
+pytest-asyncio
+
+# Experiment tracking
+mlflow
+
+# Agent orchestration
+langgraph
+langchain
