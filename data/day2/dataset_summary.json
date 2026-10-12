@@ -1,0 +1,24 @@
+{
+  "case_count": 30,
+  "dataset_version": "0.1.0",
+  "original_document_count": 90,
+  "scenario_counts": {
+    "full_match": 8,
+    "missing_information": 2,
+    "partial_delivery": 4,
+    "price_mismatch": 4,
+    "quantity_mismatch": 6,
+    "supplier_mismatch": 3,
+    "total_mismatch": 3
+  },
+  "seed": 20261012,
+  "split_counts": {
+    "development": 18,
+    "test": 6,
+    "validation": 6
+  },
+  "status_counts": {
+    "NEEDS_REVIEW": 18,
+    "VERIFIED": 12
+  }
+}
