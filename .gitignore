@@ -24,6 +24,7 @@ mlflow.db
 
 # Unit test / coverage reports
 .pytest_cache/
+.ruff_cache/
 .coverage
 
 # PostgreSQL data (if mapped locally)
