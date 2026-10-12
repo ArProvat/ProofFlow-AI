@@ -1,0 +1,15 @@
+{
+  "experiment_id": "E001",
+  "dataset_version": "0.1.0",
+  "dataset_split": "development",
+  "pipeline": "ocr_baseline",
+  "model_version": "baseline-v1",
+  "metrics": {
+    "field_accuracy": null,
+    "line_item_f1": null,
+    "mismatch_recall": null,
+    "false_verification_rate": null
+  },
+  "failure_categories": [],
+  "status": "NOT_EVALUATED"
+}
