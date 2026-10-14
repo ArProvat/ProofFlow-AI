@@ -5,6 +5,9 @@ __pycache__/
 
 # Environments
 .env
+.local_storage/
+.uv-cache/
+.tmp/
 .venv
 env/
 venv/
