@@ -1,13 +1,13 @@
 """Persistence records. Original files and each prediction/review have distinct rows."""
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from sqlalchemy import (
+    JSON,
     CheckConstraint,
     ForeignKey,
     ForeignKeyConstraint,
-    JSON,
     String,
     UniqueConstraint,
 )
@@ -21,7 +21,7 @@ def new_id() -> str:
 
 
 def now() -> datetime:
-    return datetime.now(timezone.utc)
+    return datetime.now(UTC)
 
 
 class Workspace(Base):

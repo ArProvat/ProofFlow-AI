@@ -6,8 +6,8 @@ Revises:
 
 from alembic import op
 
-from proofflow.db import Base
 import proofflow.models  # noqa: F401
+from proofflow.db import Base
 
 revision = "0001"
 down_revision = None
