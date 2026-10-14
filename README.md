@@ -23,6 +23,7 @@ ProofFlow enforces a strict separation of concerns:
 * **[REST API Contract](docs/api-contract.md):** Complete endpoint specifications, request/response models, and error envelopes.
 * **[Day 2 Dataset Specification](docs/day-2-dataset-spec.md):** Six foundational ground truth test scenarios.
 * **[Day 2 Dataset Card](docs/DATASET_CARD.md):** 30 generated bundles, 90 PDFs, six scan variants, fixed splits, and evaluation limitations. See also the [annotation guidelines](docs/ANNOTATION_GUIDELINES.md) and [review notes](docs/REVIEW_NOTES.md).
+* **[Day 3 Persistence Guide](docs/day-3-persistence.md):** PostgreSQL migration, upload API, sample import, and verification.
 * **Architecture Decision Records (ADRs):**
   * [ADR 001: Modular Monolith with Background Worker](docs/adr/001-modular-monolith.md)
   * [ADR 002: Deterministic Python Verification](docs/adr/002-deterministic-verification.md)

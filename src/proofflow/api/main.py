@@ -1,5 +1,6 @@
 import hmac
 import os
+from functools import lru_cache
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, UploadFile
@@ -26,14 +27,19 @@ def health() -> dict[str, str]:
 
 
 def authorized(authorization: Annotated[str | None, Header()] = None) -> str:
-    token = os.getenv("API_KEY", "change-me-to-a-long-random-secret")
-    if not authorization or not hmac.compare_digest(authorization, f"Bearer {token}"):
+    token = os.getenv("API_KEY")
+    if not token or not authorization or not hmac.compare_digest(authorization, f"Bearer {token}"):
         raise HTTPException(401, "Unauthorized")
     return "demo"
 
 
+@lru_cache
+def session_factory():
+    return make_session_factory()
+
+
 def get_session():
-    with make_session_factory()() as session:
+    with session_factory()() as session:
         yield session
 
 

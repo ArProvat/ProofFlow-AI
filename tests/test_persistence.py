@@ -41,6 +41,7 @@ def database(tmp_path, monkeypatch):
 
     Base.metadata.create_all(engine)
     factory = sessionmaker(engine, expire_on_commit=False)
+    monkeypatch.setenv("API_KEY", "change-me-to-a-long-random-secret")
     monkeypatch.setenv("STORAGE_ROOT", str(tmp_path / "storage"))
     monkeypatch.setattr("proofflow.cli.make_session_factory", lambda: factory)
 
@@ -219,3 +220,21 @@ def test_import_repeat_history_and_workspace_isolation(database):
             "other",
         )
     assert client.get(f"/api/v1/documents/{other.id}", headers=AUTH).status_code == 404
+
+
+def test_failed_job_insert_rolls_back_document(database):
+    def fail_job_insert(*_):
+        raise RuntimeError("injected job failure")
+
+    event.listen(Job, "before_insert", fail_job_insert)
+    try:
+        with database() as session, pytest.raises(RuntimeError, match="injected"):
+            ingest_document(
+                session,
+                io.BytesIO(b"%PDF-failure"),
+                "failure.pdf",
+                "INVOICE",
+            )
+    finally:
+        event.remove(Job, "before_insert", fail_job_insert)
+    assert count(database, Document) == count(database, Job) == 0
