@@ -28,7 +28,11 @@ def health() -> dict[str, str]:
 
 def authorized(authorization: Annotated[str | None, Header()] = None) -> str:
     token = os.getenv("API_KEY")
-    if not token or not authorization or not hmac.compare_digest(authorization, f"Bearer {token}"):
+    if (
+        not token
+        or not authorization
+        or not hmac.compare_digest(authorization, f"Bearer {token}")
+    ):
         raise HTTPException(401, "Unauthorized")
     return "demo"
 
