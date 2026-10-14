@@ -2,6 +2,7 @@
 
 import hashlib
 import os
+import re
 import tempfile
 from pathlib import Path
 from typing import BinaryIO
@@ -29,13 +30,16 @@ def store_upload(
     source: BinaryIO, workspace_id: str, max_bytes: int, root: Path | None = None
 ) -> tuple[str, str, int, str]:
     root = root or storage_root()
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,36}", workspace_id):
+        raise ValueError("Invalid workspace ID")
     root.mkdir(parents=True, exist_ok=True)
     digest = hashlib.sha256()
     size = 0
     first = b""
-    with tempfile.NamedTemporaryFile(dir=root, delete=False) as temporary:
-        temp_path = Path(temporary.name)
-        try:
+    temp_path = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=root, delete=False) as temporary:
+            temp_path = Path(temporary.name)
             while chunk := source.read(1024 * 1024):
                 if not first:
                     first = chunk[:8]
@@ -50,9 +54,10 @@ def store_upload(
             )
             if mime_type is None:
                 raise InvalidUpload("Unsupported file content")
-        except BaseException:
+    except BaseException:
+        if temp_path is not None:
             temp_path.unlink(missing_ok=True)
-            raise
+        raise
     sha256 = digest.hexdigest()
     key = f"{workspace_id}/{sha256[:2]}/{sha256}"
     destination = root / key

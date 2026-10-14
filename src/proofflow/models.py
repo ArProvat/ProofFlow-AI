@@ -51,10 +51,13 @@ class Document(Base):
 
 class VerificationCase(Base):
     __tablename__ = "verification_cases"
-    __table_args__ = (UniqueConstraint("workspace_id", "id"),)
+    __table_args__ = (
+        UniqueConstraint("workspace_id", "id"),
+        UniqueConstraint("workspace_id", "source_key"),
+    )
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     workspace_id: Mapped[str] = mapped_column(ForeignKey("workspaces.id"))
-    source_key: Mapped[str | None] = mapped_column(String(100), unique=True)
+    source_key: Mapped[str | None] = mapped_column(String(100))
     status: Mapped[str] = mapped_column(String(24), default="DRAFT")
     created_at: Mapped[datetime] = mapped_column(default=now)
 
