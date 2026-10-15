@@ -32,11 +32,22 @@ def claim_job(factory: sessionmaker) -> Claim | None:
     now = datetime.now(UTC)
     with factory() as session, session.begin():
         expired = and_(Job.status == "RUNNING", Job.lease_until < now)
-        session.execute(
-            update(Job)
-            .where(expired, Job.attempt_count >= MAX_ATTEMPTS)
-            .values(status="FAILED", last_error="LEASE_EXPIRED", lease_until=None)
+        exhausted = (
+            session.execute(
+                update(Job)
+                .where(expired, Job.attempt_count >= MAX_ATTEMPTS)
+                .values(status="FAILED", last_error="LEASE_EXPIRED", lease_until=None)
+                .returning(Job.document_id)
+            )
+            .scalars()
+            .all()
         )
+        if exhausted:
+            session.execute(
+                update(Document)
+                .where(Document.id.in_(exhausted))
+                .values(status="FAILED")
+            )
         statement = (
             select(Job)
             .where(

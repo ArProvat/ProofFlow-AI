@@ -8,6 +8,7 @@ import pytest
 from PIL import Image
 
 from proofflow.domain.documents import DocumentType
+from proofflow.evaluation.baseline import evaluate
 from proofflow.intelligence.extractor import extract_document
 from proofflow.intelligence.pdf_parser import ParseError, parse_document
 
@@ -72,3 +73,15 @@ def test_rejects_invalid_and_over_limit_documents(tmp_path):
         pdf.save(two_pages)
     with pytest.raises(ParseError, match="over-limit"):
         parse_document(two_pages, max_pages=1)
+
+
+def test_evaluation_uses_development_files_and_records_failures():
+    if not (shutil.which("tesseract") or LOCAL_TESSERACT.is_file()):
+        pytest.skip("Tesseract executable is unavailable")
+    report = evaluate(ROOT / "data/day2/cases.jsonl", ROOT / "data/day2")
+    assert report["split"] == "development"
+    assert report["documents"] == 57
+    assert report["scans"] == 3
+    assert report["parsing_success"] == 1
+    assert report["line_items"]["total"] > 0
+    assert report["failure_examples"]

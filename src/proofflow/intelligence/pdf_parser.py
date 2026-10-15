@@ -74,7 +74,11 @@ def _ocr_image(image: Image.Image, page_number: int) -> ParsedPage:
             output_type=pytesseract.Output.DICT,
             timeout=90,
         )
-    except (pytesseract.TesseractError, pytesseract.TesseractNotFoundError) as error:
+    except (
+        pytesseract.TesseractError,
+        pytesseract.TesseractNotFoundError,
+        RuntimeError,
+    ) as error:
         raise OcrError(f"Tesseract OCR failed: {error}") from error
     words = []
     lines = {}
@@ -115,7 +119,8 @@ def parse_document(path: Path, max_pages: int = 20) -> ParsedDocument:
     if not path.is_file() or path.stat().st_size > 25 * 1024 * 1024:
         raise ParseError("Missing or oversized document")
     try:
-        signature = path.open("rb").read(8)
+        with path.open("rb") as source:
+            signature = source.read(8)
         if signature.startswith(b"%PDF-"):
             with pymupdf.open(path) as pdf:
                 if pdf.is_encrypted or len(pdf) < 1 or len(pdf) > max_pages:
