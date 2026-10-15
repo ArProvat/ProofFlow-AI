@@ -10,7 +10,12 @@ from PIL import Image
 from proofflow.domain.documents import DocumentType
 from proofflow.evaluation.baseline import evaluate
 from proofflow.intelligence.extractor import extract_document
-from proofflow.intelligence.pdf_parser import ParseError, parse_document
+from proofflow.intelligence.pdf_parser import (
+    ParsedDocument,
+    ParsedPage,
+    ParseError,
+    parse_document,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 PDFS = ROOT / "data/day2/pdfs/development"
@@ -73,6 +78,16 @@ def test_rejects_invalid_and_over_limit_documents(tmp_path):
         pdf.save(two_pages)
     with pytest.raises(ParseError, match="over-limit"):
         parse_document(two_pages, max_pages=1)
+
+
+def test_missing_fields_stay_null():
+    parsed = ParsedDocument(
+        pages=[ParsedPage(page=1, text="", words=[], method="native")]
+    )
+    result = extract_document(parsed, "empty", DocumentType.GOODS_RECEIPT)
+    assert result.supplier_name is None
+    assert result.grand_total is None
+    assert result.line_items == []
 
 
 def test_evaluation_uses_development_files_and_records_failures():

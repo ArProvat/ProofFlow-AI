@@ -2,6 +2,7 @@
 
 import io
 import os
+import shutil
 from concurrent.futures import ThreadPoolExecutor
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -19,6 +20,7 @@ from proofflow.worker import claim_job, process_once
 
 ROOT = Path(__file__).resolve().parents[1]
 INVOICE = ROOT / "data/day2/pdfs/development/CASE-001-INV.pdf"
+SCAN = ROOT / "data/day2/scans/CASE-003-INV-scan.jpg"
 
 
 @pytest.fixture
@@ -77,6 +79,31 @@ def test_parse_failure_retries_then_fails(queue):
         assert stored.last_error.startswith("PARSE_ERROR:")
         assert session.get(Document, document.id).status == "FAILED"
         assert session.scalar(select(func.count()).select_from(ExtractionRun)) == 0
+
+
+def test_stored_scan_completes_with_ocr_evidence(queue):
+    if not (
+        shutil.which("tesseract")
+        or (ROOT / ".local_storage/tesseract/tesseract.exe").is_file()
+    ):
+        pytest.skip("Tesseract executable is unavailable")
+    with SCAN.open("rb") as source, queue() as session:
+        document, _ = ingest_document(session, source, SCAN.name, "INVOICE")
+    result = process_once(queue)
+    assert result["status"] == "SUCCEEDED" and result["ocr_pages"] == 1
+    with queue() as session:
+        run = session.scalar(
+            select(ExtractionRun).where(ExtractionRun.document_id == document.id)
+        )
+        assert run.predictions["invoice_number"] == "INV-2026-003"
+        assert (
+            session.scalar(
+                select(func.count())
+                .select_from(EvidenceRef)
+                .where(EvidenceRef.extraction_run_id == run.id)
+            )
+            > 0
+        )
 
 
 @pytest.mark.skipif(
