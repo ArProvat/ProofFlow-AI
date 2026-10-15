@@ -99,6 +99,7 @@ def test_two_workers_cannot_claim_same_postgres_job():
         factory = sessionmaker(engine, expire_on_commit=False)
         with factory() as session, session.begin():
             session.add(Workspace(id="test", name="test"))
+            session.flush()
             document = Document(
                 workspace_id="test",
                 document_type="INVOICE",

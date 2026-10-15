@@ -24,6 +24,7 @@ ProofFlow enforces a strict separation of concerns:
 * **[Day 2 Dataset Specification](docs/day-2-dataset-spec.md):** Six foundational ground truth test scenarios.
 * **[Day 2 Dataset Card](docs/DATASET_CARD.md):** 30 generated bundles, 90 PDFs, six scan variants, fixed splits, and evaluation limitations. See also the [annotation guidelines](docs/ANNOTATION_GUIDELINES.md) and [review notes](docs/REVIEW_NOTES.md).
 * **[Day 3 Persistence Guide](docs/day-3-persistence.md):** PostgreSQL migration, upload API, sample import, and verification.
+* **[OCR Extraction Baseline](docs/ocr-extraction-baseline.md):** Parsing, OCR worker, and E001 development evaluation.
 * **Architecture Decision Records (ADRs):**
   * [ADR 001: Modular Monolith with Background Worker](docs/adr/001-modular-monolith.md)
   * [ADR 002: Deterministic Python Verification](docs/adr/002-deterministic-verification.md)
