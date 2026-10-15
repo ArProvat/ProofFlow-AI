@@ -102,8 +102,8 @@ def _table_columns(header: list[ParsedWord]) -> dict[str, tuple[float, float]]:
     positions = sorted(labels.items(), key=lambda item: item[1])
     return {
         name: (
-            0 if index == 0 else (positions[index - 1][1] + x) / 2,
-            1 if index == len(positions) - 1 else (x + positions[index + 1][1]) / 2,
+            0 if index == 0 else x - 0.02,
+            1 if index == len(positions) - 1 else positions[index + 1][1] - 0.02,
         )
         for index, (name, x) in enumerate(positions)
     }
@@ -151,6 +151,25 @@ def extract_document(
                 "".join(word.text for word in cells.get("quantity", []))
             )
             description = " ".join(word.text for word in cells.get("description", []))
+            if not sku and quantity is None and description and items:
+                index = len(items) - 1
+                items[index].description += f" {description}"
+                old = evidence[f"line_items[{index}].description"]
+                extra = _evidence(document_id, cells["description"])
+                combined = EvidenceRef(
+                    document_id=document_id,
+                    page=old.page,
+                    bbox=(
+                        min(old.bbox[0], extra.bbox[0]),
+                        min(old.bbox[1], extra.bbox[1]),
+                        max(old.bbox[2], extra.bbox[2]),
+                        max(old.bbox[3], extra.bbox[3]),
+                    ),
+                    excerpt=f"{old.excerpt} {extra.excerpt}",
+                )
+                evidence[f"line_items[{index}].description"] = combined
+                items[index].evidence = combined
+                continue
             if not SKU.fullmatch(sku) or not description or quantity is None:
                 continue
             index = len(items)
