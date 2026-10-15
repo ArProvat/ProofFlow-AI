@@ -6,7 +6,9 @@ import json
 from pathlib import Path
 
 from proofflow.db import make_session_factory
+from proofflow.evaluation.baseline import evaluate
 from proofflow.persistence import create_case, ingest_document
+from proofflow.worker import process_once
 
 
 def import_day2(manifest: Path, data_root: Path, split: str, limit: int | None = None):
@@ -50,9 +52,25 @@ def main():
     importer.add_argument("--data-root", type=Path, required=True)
     importer.add_argument("--split", required=True)
     importer.add_argument("--limit", type=int)
+    subcommands.add_parser("process-once")
+    evaluator = subcommands.add_parser("evaluate-baseline")
+    evaluator.add_argument(
+        "--manifest", type=Path, default=Path("data/day2/cases.jsonl")
+    )
+    evaluator.add_argument("--data-root", type=Path, default=Path("data/day2"))
+    evaluator.add_argument(
+        "--output", type=Path, default=Path("experiments/E001-baseline.json")
+    )
     args = parser.parse_args()
     if args.command == "import-day2":
         print(import_day2(args.manifest, args.data_root, args.split, args.limit))
+    elif args.command == "process-once":
+        print(json.dumps(process_once()))
+    elif args.command == "evaluate-baseline":
+        report = evaluate(args.manifest, args.data_root)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        print(args.output)
 
 
 if __name__ == "__main__":

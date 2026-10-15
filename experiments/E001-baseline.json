@@ -1,0 +1,295 @@
+{
+  "experiment": "E001",
+  "model": "heuristic-v1",
+  "split": "development",
+  "created_at": "2026-10-15T05:23:02.382832+00:00",
+  "documents": 57,
+  "scans": 3,
+  "parsing_success": 1.0,
+  "field_exact_match": {
+    "supplier_name": {
+      "correct": 57,
+      "total": 57,
+      "accuracy": 1.0
+    },
+    "invoice_number": {
+      "correct": 18,
+      "total": 18,
+      "accuracy": 1.0
+    },
+    "po_number": {
+      "correct": 57,
+      "total": 57,
+      "accuracy": 1.0
+    },
+    "issue_date": {
+      "correct": 57,
+      "total": 57,
+      "accuracy": 1.0
+    },
+    "currency": {
+      "correct": 38,
+      "total": 38,
+      "accuracy": 1.0
+    },
+    "subtotal": {
+      "correct": 38,
+      "total": 38,
+      "accuracy": 1.0
+    },
+    "tax_amount": {
+      "correct": 38,
+      "total": 38,
+      "accuracy": 1.0
+    },
+    "grand_total": {
+      "correct": 38,
+      "total": 38,
+      "accuracy": 1.0
+    }
+  },
+  "line_item_accuracy": 0.8260869565217391,
+  "line_items": {
+    "correct": 95,
+    "total": 115
+  },
+  "ocr_fallback_rate": 0.05263157894736842,
+  "evidence_coverage": 1.0,
+  "latency_ms": {
+    "p50": 11.9,
+    "p95": 304.3
+  },
+  "errors": {
+    "line_item": 20
+  },
+  "failure_examples": [
+    {
+      "document_id": "CASE-002-GRN",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": null,
+        "quantity": "11",
+        "sku": "ST-06",
+        "unit_price": null
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "11",
+        "unit_price": null,
+        "line_total": null
+      }
+    },
+    {
+      "document_id": "CASE-002-INV",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": "1639.00",
+        "quantity": "11",
+        "sku": "ST-06",
+        "unit_price": "149.00"
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "11",
+        "unit_price": "149.00",
+        "line_total": "1639.00"
+      }
+    },
+    {
+      "document_id": "CASE-002-PO",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": "3129.00",
+        "quantity": "21",
+        "sku": "ST-06",
+        "unit_price": "149.00"
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "21",
+        "unit_price": "149.00",
+        "line_total": "3129.00"
+      }
+    },
+    {
+      "document_id": "CASE-004-GRN",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": null,
+        "quantity": "70",
+        "sku": "ST-06",
+        "unit_price": null
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "70",
+        "unit_price": null,
+        "line_total": null
+      }
+    },
+    {
+      "document_id": "CASE-004-INV",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": "10430.00",
+        "quantity": "70",
+        "sku": "ST-06",
+        "unit_price": "149.00"
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "70",
+        "unit_price": "149.00",
+        "line_total": "10430.00"
+      }
+    },
+    {
+      "document_id": "CASE-004-PO",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": "10430.00",
+        "quantity": "70",
+        "sku": "ST-06",
+        "unit_price": "149.00"
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "70",
+        "unit_price": "149.00",
+        "line_total": "10430.00"
+      }
+    },
+    {
+      "document_id": "CASE-007-GRN",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": null,
+        "quantity": "23",
+        "sku": "ST-06",
+        "unit_price": null
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "23",
+        "unit_price": null,
+        "line_total": null
+      }
+    },
+    {
+      "document_id": "CASE-007-INV",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": "3427.00",
+        "quantity": "23",
+        "sku": "ST-06",
+        "unit_price": "149.00"
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "23",
+        "unit_price": "149.00",
+        "line_total": "3427.00"
+      }
+    },
+    {
+      "document_id": "CASE-007-PO",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": "3427.00",
+        "quantity": "23",
+        "sku": "ST-06",
+        "unit_price": "149.00"
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "23",
+        "unit_price": "149.00",
+        "line_total": "3427.00"
+      }
+    },
+    {
+      "document_id": "CASE-008-GRN",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": null,
+        "quantity": "65",
+        "sku": "ST-06",
+        "unit_price": null
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "65",
+        "unit_price": null,
+        "line_total": null
+      }
+    },
+    {
+      "document_id": "CASE-008-INV",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": "9685.00",
+        "quantity": "65",
+        "sku": "ST-06",
+        "unit_price": "149.00"
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "65",
+        "unit_price": "149.00",
+        "line_total": "9685.00"
+      }
+    },
+    {
+      "document_id": "CASE-008-PO",
+      "scan": false,
+      "field": "line_item:ST-06",
+      "expected": {
+        "description": "Ergonomic Standing Desk Converter",
+        "line_total": "9685.00",
+        "quantity": "65",
+        "sku": "ST-06",
+        "unit_price": "149.00"
+      },
+      "predicted": {
+        "sku": "ST-06",
+        "description": "Ergonomic Standing",
+        "quantity": "65",
+        "unit_price": "149.00",
+        "line_total": "9685.00"
+      }
+    }
+  ]
+}

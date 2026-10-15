@@ -6,6 +6,7 @@ from uuid import uuid4
 from sqlalchemy import (
     JSON,
     CheckConstraint,
+    DateTime,
     ForeignKey,
     ForeignKeyConstraint,
     String,
@@ -130,4 +131,5 @@ class Job(Base):
     status: Mapped[str] = mapped_column(String(24), default="QUEUED")
     attempt_count: Mapped[int] = mapped_column(default=0)
     last_error: Mapped[str | None]
+    lease_until: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(default=now)
